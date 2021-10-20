@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <title>JS Bin</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <link href="jquery-ui/jquery-ui.css" rel="stylesheet">
+        <script src="jquery-ui/jquery-ui.js"></script>
+        <style type="text/css">
+            body{
+                margin: 0;
+                padding: 0;
+                font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode';
+            }
+            #logo{
+              font-size: 28px;
+              padding:1px;
+              float:left;
+            }
+            
+            #top-bar{
+                height: 35px;
+                width:100%;
+                background-color:#F2F3F4 ;
+            }
+            #buttons{
+               width:300px;
+               margin: 0 auto;  
+               font-size: 18px; 
+               padding:5px;
+               
+
+            }
+            .toggle{
+                background-color:#E8F8F5 ;
+                float:left;
+                padding:2px;
+                border: #CACFD2 1px solid;
+                
+            }
+            #html{
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+            }
+            #op{
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+            .highlight{
+                background-color: white;
+            }
+            .button-active{
+                background-color: #D1F2EB;
+            }
+            textarea{
+                resize: none;
+                border-top: none;
+                border-color: grey;
+
+            }
+            .panel{
+                float:left;
+                height: 100%;
+            }
+            .hidden{
+                display:none;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <div id="top-bar">
+           <div id="logo">Code Player</div>
+            <div id="buttons"> 
+               <div class="toggle" id="html">HTML</div>
+               <div class="toggle" id="css">CSS</div>
+               <div class="toggle" id="js">JavaScript</div>
+               <div class="toggle" id="op">Output</div>
+            </div>
+        </div>
+
+        <div id="codes">
+            <textarea id="htmltext" class="panel hidden"><p id="para">hello world</p></textarea>
+            <textarea id="csstext" class="panel hidden">p{
+                color:green;}
+            </textarea>
+            <textarea id="jstext" class="panel hidden">document.getElementById("para").innerHTML="hello hasi";</textarea>
+            
+            <iframe id="optext" class="panel hidden "></iframe>
+
+        </div>
+
+
+        <script type="text/javascript">
+         function iframes(){
+            $("iframe").contents().find("html").html("<html><head><style type='text/css'>"+$("#csstext").val()+"</style></head><body>"+$('#htmltext').val()+"</body></html>");
+            document.getElementById("optext").contentWindow.eval($("#jstext").val());
+         }
+            $(".toggle").hover(function() {
+               $(this).addClass("highlight");
+            },function(){
+                $(this).removeClass("highlight");
+            });
+            $(".toggle").click(function() {
+               $(this).toggleClass("button-active");
+               var panelid=$(this).attr("id")+"text";
+               $("#"+panelid).toggleClass("hidden");
+               var activepanelscount = 4-$(".hidden").length;
+               $(".panel").width($(window).width()/activepanelscount-10);
+            });
+            $(".panel").width($(window).width()/2-10);
+            iframes();
+           $("textarea").on('change keyup paste',function(){
+                iframes();
+            });
+         
+
+        </script>
+    </body>
+</html>
